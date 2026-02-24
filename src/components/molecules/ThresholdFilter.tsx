@@ -32,7 +32,7 @@ export default function ThresholdFilter({ value, onChange }: ThresholdFilterProp
         step={1000}
         value={inputValue}
         onChange={handleChange}
-        placeholder="e.g. 30000"
+        placeholder="30000"
         className="w-48"
       />
       <p className="pb-2 text-xs text-gray-500">

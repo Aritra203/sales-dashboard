@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { Card, Heading } from "@/components/atoms";
 import { ChartTypeSwitcher, YearSelector, ThresholdFilter, StatCard } from "@/components/molecules";
 import {
@@ -35,7 +35,6 @@ export default function SalesDashboard() {
   const categoryRevenue = getCategoryRevenue(currentYearData);
   const monthlyUnits = getMonthlyUnitsSold(currentYearData);
 
-  // Comparison data for all years
   const allYearsMonthly = salesDataSource.map((yd) => ({
     year: yd.year,
     data: getMonthlyRevenue(yd),
@@ -66,14 +65,12 @@ export default function SalesDashboard() {
     }
   };
 
-  // Format currency
   const formatCurrency = (value: number) => {
     if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
     if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
     return `$${value}`;
   };
 
-  // Calculate year-over-year growth
   const prevYearData = salesDataSource.find((d) => d.year === selectedYear - 1);
   const yoyGrowth = prevYearData
     ? (((currentYearData.totalRevenue - prevYearData.totalRevenue) / prevYearData.totalRevenue) * 100).toFixed(1)
@@ -94,12 +91,11 @@ export default function SalesDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <Heading level={1}>Sales Dashboard</Heading>
           <p className="mt-1 text-sm text-gray-500">
-            Retail sales overview — data inspired by Kaggle datasets
+            Retail sales overview across 2022–2024
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -117,13 +113,11 @@ export default function SalesDashboard() {
         </div>
       </div>
 
-      {/* Year Selector */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <YearSelector years={years} selectedYear={selectedYear} onYearChange={setSelectedYear} />
         <ChartTypeSwitcher activeType={chartType} onTypeChange={setChartType} />
       </div>
 
-      {/* Stat Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Total Revenue"
@@ -153,7 +147,6 @@ export default function SalesDashboard() {
         />
       </div>
 
-      {/* Main Chart */}
       <Card>
         <div className="mb-4">
           <Heading level={3}>
@@ -165,9 +158,7 @@ export default function SalesDashboard() {
         {renderChart()}
       </Card>
 
-      {/* Additional Charts Row */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Units Sold Chart */}
         <Card>
           <Heading level={3} className="mb-4">
             Monthly Units Sold — {selectedYear}
@@ -175,7 +166,6 @@ export default function SalesDashboard() {
           <UnitsSoldChart data={monthlyUnits} />
         </Card>
 
-        {/* Year-over-Year Comparison */}
         <Card>
           <Heading level={3} className="mb-4">
             Revenue Comparison (All Years)
@@ -188,7 +178,6 @@ export default function SalesDashboard() {
         </Card>
       </div>
 
-      {/* Threshold Filter */}
       <Card>
         <Heading level={3} className="mb-4">
           Custom Revenue Filter
@@ -196,7 +185,6 @@ export default function SalesDashboard() {
         <ThresholdFilter value={threshold} onChange={setThreshold} />
       </Card>
 
-      {/* Filtered Data Table */}
       {threshold > 0 && (
         <FilteredDataTable data={currentYearData.data} threshold={threshold} />
       )}

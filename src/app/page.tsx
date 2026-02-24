@@ -9,8 +9,8 @@ export default function Home() {
             Sales Dashboard
           </h1>
           <p className="text-lg text-gray-600 max-w-md mx-auto">
-            Explore retail sales data across 2022–2024 with interactive charts,
-            custom filters, and year-over-year comparisons.
+            Retail sales data for 2022–2024 with interactive charts,
+            filters, and year-over-year comparisons.
           </p>
         </div>
 
