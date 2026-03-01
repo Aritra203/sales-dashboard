@@ -89,6 +89,14 @@ export default function SalesDashboard() {
     }
   };
 
+  const handleReset = () => {
+    setSelectedYear(2024);
+    setChartType("bar");
+    setThreshold(0);
+    setApiData(null);
+    setUseApi(false);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -113,10 +121,30 @@ export default function SalesDashboard() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <YearSelector years={years} selectedYear={selectedYear} onYearChange={setSelectedYear} />
-        <ChartTypeSwitcher activeType={chartType} onTypeChange={setChartType} />
-      </div>
+      <Card>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-1">
+              <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Year</span>
+              <YearSelector years={years} selectedYear={selectedYear} onYearChange={setSelectedYear} />
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Chart Type</span>
+              <ChartTypeSwitcher activeType={chartType} onTypeChange={setChartType} />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <ThresholdFilter value={threshold} onChange={setThreshold} />
+            <button
+              onClick={handleReset}
+              className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-100 cursor-pointer whitespace-nowrap"
+            >
+              ↺ Reset All
+            </button>
+          </div>
+        </div>
+      </Card>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
@@ -177,13 +205,6 @@ export default function SalesDashboard() {
           />
         </Card>
       </div>
-
-      <Card>
-        <Heading level={3} className="mb-4">
-          Custom Revenue Filter
-        </Heading>
-        <ThresholdFilter value={threshold} onChange={setThreshold} />
-      </Card>
 
       {threshold > 0 && (
         <FilteredDataTable data={currentYearData.data} threshold={threshold} />
